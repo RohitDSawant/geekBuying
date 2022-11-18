@@ -28,6 +28,12 @@ app.get("/users", async (req, res) => {
 app.post("/signup", validate, async (req, res) => {
   const { email, password,role } = req.body;
 
+   const user_x = await UserModel.findOne({ email: email });
+    if (user_x) {
+        res.send("User already exists...Please try Login")
+    }
+  
+  else{
   bcrypt.hash(password, Number(process.env.ROUNDS), async (err, hashed) => {
     if (err) {
       res.send("SignUp failed...Please try in sometime");
@@ -38,6 +44,7 @@ app.post("/signup", validate, async (req, res) => {
       res.send("SignUp Sucessfull....");
     }
   });
+  }
 });
 
 // LOGIN =====>
